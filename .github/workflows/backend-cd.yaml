@@ -91,7 +91,7 @@ jobs:
     needs: [build-and-push]
     defaults:
       run:
-        working-directory: setup/k8s
+        working-directory: starter/backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
