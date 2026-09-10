@@ -1,27 +1,21 @@
-FROM public.ecr.aws/docker/library/python:3.10-alpine
+FROM python:3.10-alpine3.18
 
 RUN adduser -u 1000 -D app
 
 RUN apk update && \
-    apk add \
+    apk add --no-cache \
     pcre \
     pcre-dev \
     build-base \
-    gcc \
     linux-headers \
     openssl \
     libffi-dev \
-    && pip install pipenv
-
-# Force GCC to treat legacy C pointer signatures as warnings, not fatal errors
-ENV CFLAGS="-Wno-error=incompatible-pointer-types"
-ENV CPPFLAGS="-Wno-error=incompatible-pointer-types"
-
-RUN mkdir -p /var/www/app && mkdir /app
+    && pip install --no-cache-dir pipenv
 
 WORKDIR /app
 
 COPY Pipfile* /app/
+
 RUN pipenv install --system --deploy
 
 COPY . /app
