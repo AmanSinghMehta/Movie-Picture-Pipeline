@@ -105,3 +105,8 @@ jobs:
       - name: Deploy to EKS
         run: |
           kubectl apply -k k8s
+
+      - name: Print Application URL
+        run: |
+          sleep 10
+          kubectl get svc -A
