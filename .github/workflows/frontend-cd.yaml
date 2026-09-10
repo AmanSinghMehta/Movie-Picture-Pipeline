@@ -79,9 +79,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Log into Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v2
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -91,13 +88,9 @@ jobs:
 
       - name: Log into Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and Push Docker Image
-        run: |
-          docker build \
-            --build-arg REACT_APP_MOVIE_API_URL=${{ secrets.REACT_APP_MOVIE_API_URL }} \
-            -t ${{ secrets.FRONTEND_ECR_REPO }}:${{ github.sha }} .
-          docker push ${{ secrets.FRONTEND_ECR_REPO }}:${{ github.sha }}
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
   deploy:
     name: Deploy to EKS
