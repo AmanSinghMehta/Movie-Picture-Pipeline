@@ -77,8 +77,11 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           REACT_APP_MOVIE_API_URL: ${{ secrets.REACT_APP_MOVIE_API_URL }}
         run: |
-          docker build --build-arg REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL -t $ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REPOSITORY:$IMAGE_TAG
+          echo "Building image for: $ECR_REPOSITORY"
+          docker build \
+            --build-arg REACT_APP_MOVIE_API_URL="${REACT_APP_MOVIE_API_URL}" \
+            -t "${ECR_REPOSITORY}:${IMAGE_TAG}" .
+          docker push "${ECR_REPOSITORY}:${IMAGE_TAG}"
 
   deploy:
     name: Deploy to EKS
