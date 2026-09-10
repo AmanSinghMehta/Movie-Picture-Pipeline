@@ -106,11 +106,9 @@ jobs:
 
       - name: Update kubeconfig
         run: |
-          aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_DEFAULT_REGION }}
+          aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region us-east-1
 
       - name: Deploy to EKS
-        env:
-          ECR_REPOSITORY: ${{ secrets.BACKEND_ECR_REPO }}
-          IMAGE_TAG: ${{ github.sha }}
+        working-directory: starter/backend/k8s
         run: |
-          kubectl set image deployment/backend backend=$ECR_REPOSITORY:$IMAGE_TAG
+          kubectl apply -f .
