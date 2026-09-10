@@ -109,6 +109,5 @@ jobs:
           aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region us-east-1
 
       - name: Deploy to EKS
-        working-directory: starter/backend/k8s
         run: |
-          kubectl apply -f .
+          kubectl apply -k k8s
